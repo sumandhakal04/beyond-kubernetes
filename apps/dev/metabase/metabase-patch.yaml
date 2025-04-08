@@ -1,0 +1,50 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: metabase
+  namespace: metabase
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: metabase
+      version: "2.x"
+      sourceRef:
+        kind: HelmRepository
+        name: metabase
+        namespace: metabase
+      interval: 12h
+  values:
+    hpa:
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 3
+      targetCPUUtilizationPercentage: 80
+      targetMemoryUtilizationPercentage: 80
+    
+    image:
+      repository: metabase/metabase
+      tag: latest
+
+    database:
+      type: h2
+      file: /metabase-data/metabase.db
+    
+    extraVolumeMounts:
+      - name: metabase-data
+        mountPath: /metabase-data
+    
+    extraVolumes:
+      - name: metabase-data
+
+    ingress:
+      hosts: 
+      - metabase.dev.example.com
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-dev
+      path: /
+      pathType: Prefix
+      tls:
+      - secretName: metabase-tls
+        hosts:
+        - metabase.dev.example.com
