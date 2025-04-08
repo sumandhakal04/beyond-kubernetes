@@ -30,11 +30,20 @@ spec:
         namespace: argocd
       interval: 12h
   values:
+    global:
+      domain: argocd.example.com
     server:
+      name: argocd-server
       ingress:
         enabled: true
         controller: generic
+        ingressClassName: "nginx"
         annotations:
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
           nginx.ingress.kubernetes.io/ssl-passthrough: "true"
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+          cert-manager.io/cluster-issuer: letsencrypt-dev
+        hostname: "argocd.example.com"
+        path: /
+        pathType: Prefix
+        tls: true
