@@ -37,8 +37,6 @@ spec:
         serviceAccount:
           create: true
           name: "service-account-monitoring"
-          annotations:
-            - eks.amazonaws.com/role-arn=arn:aws:iam::12345678912:role/efs-role-for-pods
     alertmanager:
       ingress:
         enabled: true
@@ -46,17 +44,34 @@ spec:
         annotations:
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
           kubernetes.io/tls-acme: "true"
+          cert-manager.io/cluster-issuer: letsencrypt-dev
+        hosts:
+        - alertmanager.example.com
+        pathType: ImplementationSpecific
+        tls:
+        - secretName: alertmanager-tls
+          hosts:
+          - alertmanager.example.com
 
     grafana:
+      adminUser: admin
+      adminPassword: changeit
       ingress:
         enabled: true
         ingressClassName: nginx
         annotations:
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
           kubernetes.io/tls-acme: "true"
+          cert-manager.io/cluster-issuer: letsencrypt-dev
+        hosts:
+        - monitoring.example.com
+        tls:
+        - secretName: monitoring-tls
+          hosts:
+          - monitoring.example.com
       persistence:
         enabled: true
-        storageClassName: "gp2"
+        storageClassName: "storageclassname"
         size: 5Gi
 
       sidecar:
@@ -116,6 +131,14 @@ spec:
         annotations:
           nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
           kubernetes.io/tls-acme: "true"
+          cert-manager.io/cluster-issuer: letsencrypt-dev
+        hosts:
+        - prometheus.example.com
+        pathType: ImplementationSpecific
+        tls:
+        - secretName: prometheus-tls
+          hosts:
+          - prometheus.example.com
 
     ## Setting to true produces cleaner resource names, but requires a data migration because the name of the persistent volume changes. Therefore this should only be set once on initial installation.
     ##
