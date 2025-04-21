@@ -1,0 +1,54 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: platform-dev
+  namespace: argocd
+spec:
+  description: "Project for all dev applications under agribora"
+  destinations:
+    - server: https://kubernetes.default.svc
+  sourceRepos:
+    - https://https://github.com/sumandhakal04/argocd-demo-apps.git
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  roles:
+    - name: read-only
+      description: "Read-only access to monitor resources"
+      policies:
+        - p, proj:platform-dev:read-only, applications, get, platform-dev/*, allow
+        - p, proj:platform-dev:read-only, applications, sync, platform-dev/*, allow
+  syncWindows:
+    - kind: allow
+      schedule: "* * * * *"
+      duration: "5m"
+      applications:
+        - "*"
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: platform-prod
+  namespace: argocd
+spec:
+  description: "Project for all prod applications under Tilil Platform"
+  destinations:
+    - server: https://kubernetes.prod.svc
+  sourceRepos:
+    - https://https://github.com/sumandhakal04/argocd-demo-apps.git
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+  roles:
+    - name: read-only
+      description: "Read-only access to monitor resources"
+      policies:
+        - p, proj:platform-prod:read-only, applications, get, platform-prod/*, allow
+        - p, proj:platform-prod:read-only, applications, sync, platform-prod/*, allow
+  syncWindows:
+    - kind: allow
+      schedule: "* * * * *"
+      duration: "5m"
+      applications:
+        - "*"

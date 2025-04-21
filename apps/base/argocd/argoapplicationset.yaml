@@ -1,0 +1,33 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: agribora-platform
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - git:
+        directories:
+          - path: apps/*/overlays/dev
+          - path: apps/*/overlays/prod
+        repoURL: https://https://github.com/sumandhakal04/argocd-demo-apps.git
+        revision: HEAD
+  template:
+    metadata:
+      name: '{{index (splitList "/" .path.path) 1}}-{{index (splitList "/" .path.path) 3}}-platform'
+    spec:
+      destination:
+        namespace: erpnext
+        server: https://kubernetes.default.svc
+      project: '{{if eq (index (splitList "/" .path.path) 3) "dev"}}platform-dev{{else}}platform-prod{{end}}'
+      source:
+        path: '{{.path.path}}'
+        repoURL: https://https://github.com/sumandhakal04/argocd-demo-apps.git
+        targetRevision: HEAD
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
