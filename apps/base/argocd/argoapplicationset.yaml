@@ -11,7 +11,7 @@ spec:
         directories:
           - path: apps/*/overlays/dev
           - path: apps/*/overlays/prod
-        repoURL: https://https://github.com/sumandhakal04/argocd-demo-apps.git
+        repoURL: https://github.com/sumandhakal04/argocd-demo-apps.git
         revision: HEAD
   template:
     metadata:
@@ -23,7 +23,7 @@ spec:
       project: '{{if eq (index (splitList "/" .path.path) 3) "dev"}}platform-dev{{else}}platform-prod{{end}}'
       source:
         path: '{{.path.path}}'
-        repoURL: https://https://github.com/sumandhakal04/argocd-demo-apps.git
+        repoURL: https://github.com/sumandhakal04/argocd-demo-apps.git
         targetRevision: HEAD
       syncPolicy:
         automated:
