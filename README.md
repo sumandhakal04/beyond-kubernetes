@@ -31,7 +31,7 @@ This repository offers a structured approach to deploying and managing Kubernete
 
 4. **Set Up Infrastructure**:
 
-   Cluster components resources are added inside `/infrastructure` directory.
+   Cluster components resources are added inside `infrastructure/` directory.
 
 4. **Deploy Applications**:
 
@@ -39,7 +39,7 @@ This repository offers a structured approach to deploying and managing Kubernete
 
 5. **Utilize Automation Scripts**:
 
-   Run validate.sh inside `/scripts` to validate flux custom resource changes before each push
+   Run validate.sh inside `scripts/` to validate flux custom resource changes before each push
 
 ## 🧰 Tools and Technologies
 
