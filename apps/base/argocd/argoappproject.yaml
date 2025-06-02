@@ -4,11 +4,11 @@ metadata:
   name: platform-dev
   namespace: argocd
 spec:
-  description: "Project for all dev applications under agribora"
+  description: "Project for all dev applications under example app"
   destinations:
     - server: https://kubernetes.default.svc
   sourceRepos:
-    - https://github.com/sumandhakal04/argocd-demo-apps.git
+    - https://github.com/sumandhakal04/argocd.git
   clusterResourceWhitelist:
     - group: "*"
       kind: "*"
@@ -32,11 +32,11 @@ metadata:
   name: platform-prod
   namespace: argocd
 spec:
-  description: "Project for all prod applications under Tilil Platform"
+  description: "Project for all prod applications under example Platform"
   destinations:
     - server: https://kubernetes.prod.svc
   sourceRepos:
-    - https://github.com/sumandhakal04/argocd-demo-apps.git
+    - https://github.com/sumandhakal04/argocd.git
   clusterResourceWhitelist:
     - group: "*"
       kind: "*"
