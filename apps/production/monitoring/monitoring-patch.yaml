@@ -1,0 +1,37 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: prometheus-stack
+  namespace: monitoring
+spec:
+  values:
+    alertmanager:
+      ingress:
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+        hosts:
+        - alertmanager.prod.example.com
+        tls:
+        - secretName: alertmanager-tls
+          hosts:
+          - alertmanager.prod.example.com
+    grafana:
+      ingress:
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+        hosts:
+        - monitoring.prod.example.com
+        tls:
+        - secretName: monitoring-tls
+          hosts:
+          - monitoring.prod.example.com
+    prometheus:
+      ingress:
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+        hosts:
+        - prometheus.prod.example.com
+        tls:
+        - secretName: prometheus-tls
+          hosts:
+          - prometheus.prod.example.com

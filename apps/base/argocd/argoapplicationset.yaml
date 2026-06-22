@@ -9,18 +9,18 @@ spec:
   generators:
     - git:
         directories:
-          - path: apps/*/overlays/dev
-          - path: apps/*/overlays/prod
+          - path: apps/dev/*
+          - path: apps/production/*
         repoURL: https://github.com/sumandhakal04/argocd.git
         revision: HEAD
   template:
     metadata:
-      name: '{{index (splitList "/" .path.path) 1}}-{{index (splitList "/" .path.path) 3}}-platform'
+      name: '{{index (splitList "/" .path.path) 2}}-{{index (splitList "/" .path.path) 1}}-platform'
     spec:
       destination:
         namespace: erpnext
         server: https://kubernetes.default.svc
-      project: '{{if eq (index (splitList "/" .path.path) 3) "dev"}}platform-dev{{else}}platform-prod{{end}}'
+      project: '{{if eq (index (splitList "/" .path.path) 1) "dev"}}platform-dev{{else}}platform-prod{{end}}'
       source:
         path: '{{.path.path}}'
         repoURL: https://github.com/sumandhakal04/argocd.git
