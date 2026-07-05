@@ -3,3 +3,6 @@ kind: Kustomization
 resources:
   - cluster-issuer.yaml
   - certificate.yaml
+  - secret-store.yaml
+  - external-secrets.yaml
+  - external-secrets-db.yaml
